@@ -11,6 +11,16 @@ class UserLoginForm
   validates_presence_of :password
 
   def valid_credentials?
-    valid?
+    return false unless valid?
+    return false unless user
+
+    user.password == password
+  end
+
+  def user
+    # Preventing making extra DB calls in case @user is attributed with nil
+    return @user if defined?(@user)
+
+    @user = User.find_by_username(username)
   end
 end
