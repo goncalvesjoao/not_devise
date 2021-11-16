@@ -6,11 +6,11 @@ class User < ApplicationRecord
   end
 
   def authenticate!(password)
-    if authenticate(password)
-      reset_login_failure_count and return true
-    end
+    return false if locked?
 
-    increment_login_failure_count and return false
+    reset_login_failure_count! and return true if authenticate(password)
+
+    increment_login_failure_count! and return false
   end
 
   def locked?
@@ -24,7 +24,7 @@ class User < ApplicationRecord
   end
 
   def increment_login_failure_count!
-    self.login_failure_count++
+    self.login_failure_count += 1
 
     if login_failure_count >= MAX_LOGIN_FAILURES
       self.locked_at = Time.now
