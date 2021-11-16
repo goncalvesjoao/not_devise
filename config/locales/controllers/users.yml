@@ -1,0 +1,6 @@
+en:
+  users:
+    sessions:
+      create:
+        alert: "Incorrect 'handle' or 'password'. Please, try again."
+        notice: "Welcome, %{username}!"
