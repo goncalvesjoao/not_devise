@@ -1,0 +1,6 @@
+en:
+  users:
+    sessions:
+      new:
+        title: 'Welcome, please log in'
+        submit: Log In
