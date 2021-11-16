@@ -14,7 +14,7 @@ class UserLoginForm
     return false unless valid?
     return false unless user
 
-    user.password == password
+    user.authenticate!(password)
   end
 
   def user
