@@ -1,14 +1,14 @@
 class User < ApplicationRecord
   MAX_LOGIN_FAILURES = 3
 
-  def authenticate(password)
+  def verify_password(password)
     false
   end
 
-  def authenticate!(password)
+  def verify_password!(password)
     return false if locked?
 
-    reset_login_failure_count! and return true if authenticate(password)
+    reset_login_failure_count! and return true if verify_password(password)
 
     increment_login_failure_count! and return false
   end

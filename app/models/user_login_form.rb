@@ -14,11 +14,11 @@ class UserLoginForm
     return false unless valid?
     return false unless user
 
-    user.authenticate!(password)
+    user.verify_password!(password)
   end
 
   def user
-    # Preventing making extra DB calls in case @user is attributed with nil
+    # Preventing making extra DB calls in case @user is set to nil
     return @user if defined?(@user)
 
     @user = User.find_by_username(username)

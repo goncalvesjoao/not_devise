@@ -19,15 +19,15 @@ describe User, type: :model do
     end
   end
 
-  describe '#authenticate!' do
+  describe '#verify_password!' do
     context 'when the user password is valid and the user is not locked' do
       let(:user) { create(:user, :login_failed_one_attempt_left) }
       let(:password) { '123' }
 
       it 'must return true and reset the login_failure_count' do
-        allow(user).to receive(:authenticate) { true }
+        allow(user).to receive(:verify_password) { true }
 
-        expect(user.authenticate!(password)).to be true
+        expect(user.verify_password!(password)).to be true
 
         expect(user.login_failure_count).to be 0
         expect(user.locked_at).to be nil
@@ -39,9 +39,9 @@ describe User, type: :model do
       let(:password) { '123' }
 
       it 'must return false and not change login_failure_count' do
-        allow(user).to receive(:authenticate) { false }
+        allow(user).to receive(:verify_password) { false }
 
-        expect(user.authenticate!(password)).to be false
+        expect(user.verify_password!(password)).to be false
 
         expect(user.login_failure_count).to be User::MAX_LOGIN_FAILURES
         expect(user.locked_at).to_not be nil
@@ -53,9 +53,9 @@ describe User, type: :model do
       let(:password) { '123' }
 
       it 'must return false and increment the login_failure_count' do
-        allow(user).to receive(:authenticate) { false }
+        allow(user).to receive(:verify_password) { false }
 
-        expect(user.authenticate!(password)).to be false
+        expect(user.verify_password!(password)).to be false
 
         expect(user.login_failure_count).to be 1
         expect(user.locked_at).to be nil
@@ -67,9 +67,9 @@ describe User, type: :model do
       let(:password) { '123' }
 
       it 'must return false, increment the login_failure_count and populate locked_at' do
-        allow(user).to receive(:authenticate) { false }
+        allow(user).to receive(:verify_password) { false }
 
-        expect(user.authenticate!(password)).to be false
+        expect(user.verify_password!(password)).to be false
 
         expect(user.login_failure_count).to be User::MAX_LOGIN_FAILURES
         expect(user.locked_at).to_not be nil
@@ -81,9 +81,9 @@ describe User, type: :model do
       let(:password) { '123' }
 
       it 'must return false and not increment login_failure_count' do
-        allow(user).to receive(:authenticate) { false }
+        allow(user).to receive(:verify_password) { false }
 
-        expect(user.authenticate!(password)).to be false
+        expect(user.verify_password!(password)).to be false
 
         expect(user.login_failure_count).to be User::MAX_LOGIN_FAILURES
         expect(user.locked_at).to_not be nil
