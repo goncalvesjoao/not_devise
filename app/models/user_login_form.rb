@@ -9,4 +9,8 @@ class UserLoginForm
 
   validates_presence_of :username
   validates_presence_of :password
+
+  def valid_credentials?
+    valid?
+  end
 end

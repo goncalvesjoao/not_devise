@@ -1,6 +1,6 @@
 <div class="mt-5 row justify-content-md-center">
   <div class="col-12 col-lg-4">
-    <%= simple_form_for(@user_login_form, url: users_sessions_path, method: :post, wrapper: :floating_form) do |f| %>
+    <%= simple_form_for(@user_login_form, url: users_sessions_path, as: :user, method: :post, wrapper: :floating_form) do |f| %>
       <div class="text-center">
         <img class="mb-4" src="<%= asset_path('bootstrap-logo.svg') %>" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal"><%= t('.title') %></h1>
