@@ -1,0 +1,10 @@
+en:
+  activemodel:
+    models:
+      user_login_form:
+        one: User
+        other: Users
+    attributes:
+      user_login_form:
+        username: Your handle
+        password: Password
