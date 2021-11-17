@@ -4,6 +4,10 @@ en:
       user_login_form:
         one: User
         other: Users
+    errors:
+      models:
+        user_login_form:
+          locked: "user locked for maxing out it's log_in attempts"
     attributes:
       user_login_form:
         username: Your handle

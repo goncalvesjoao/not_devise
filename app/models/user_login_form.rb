@@ -4,23 +4,36 @@ class UserLoginForm
   include ActiveModel::Model
   extend ActiveModel::Translation
 
+  NullUser = Struct.new('NullUser', :id) do
+    def locked?; false; end
+    def verify_password(*); false; end
+    def verify_password!(*); false; end
+  end
+
   attr_accessor :username
   attr_accessor :password
 
   validates_presence_of :username
   validates_presence_of :password
+  validate :validate_user_locked
+
+  delegate :id, to: :user, prefix: true
+  delegate :locked?, :verify_password!, :verify_password, to: :user, prefix: true, private: true
 
   def valid_credentials?
-    return false unless valid?
-    return false unless user
-
-    user.verify_password!(password)
+    valid? && user_verify_password!(password)
   end
 
-  def user
-    # Preventing making extra DB calls in case @user is set to nil
-    return @user if defined?(@user)
+  protected
 
-    @user = User.find_by_username(username)
+  def user
+    @user ||= User.find_by(username: username) || NullUser.new
+  end
+
+  def validate_user_locked
+    return unless user_verify_password(password)
+    return unless user_locked?
+
+    errors.add(:username, :locked)
   end
 end

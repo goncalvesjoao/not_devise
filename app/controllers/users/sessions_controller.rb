@@ -8,7 +8,7 @@ module Users
       @user_login_form = UserLoginForm.new(create_params)
 
       if @user_login_form.valid_credentials?
-        session[:user_id] = @user_login_form.user.id.to_s
+        session[:user_id] = @user_login_form.user_id.to_s
 
         redirect_to root_path, notice: t('.notice', username: @user_login_form.username)
       else
