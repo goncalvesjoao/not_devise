@@ -1,4 +1,4 @@
-# See more in: https://robots.thoughtbot.com/activemodel-form-objects
+# More details at: https://robots.thoughtbot.com/activemodel-form-objects
 
 class UserLoginForm
   include ActiveModel::Model

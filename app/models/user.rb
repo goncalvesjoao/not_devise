@@ -25,11 +25,14 @@ class User < ApplicationRecord
 
   def increment_login_failure_count!
     self.login_failure_count += 1
-
-    if login_failure_count >= MAX_LOGIN_FAILURES
-      self.locked_at = Time.now
-    end
+    self.locked_at = Time.now if should_user_be_locked?
 
     save
+  end
+
+  private
+
+  def should_user_be_locked?
+    login_failure_count >= MAX_LOGIN_FAILURES
   end
 end

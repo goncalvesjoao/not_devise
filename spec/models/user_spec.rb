@@ -10,7 +10,7 @@ describe User, type: :model do
       end
     end
 
-    context 'when the user.locked_at as a date' do
+    context 'when the user.locked_at is populated with a date' do
       subject { create(:user, locked_at: Time.now) }
 
       it 'must return true' do
@@ -20,7 +20,7 @@ describe User, type: :model do
   end
 
   describe '#verify_password!' do
-    context 'when the user password is valid and the user is not locked' do
+    context 'when the user password is valid and the user is not yet locked' do
       let(:user) { create(:user, :login_failed_one_attempt_left) }
       let(:password) { '123' }
 
@@ -62,7 +62,7 @@ describe User, type: :model do
       end
     end
 
-    context 'when the user password is invalid and user only has one login_failure attempt' do
+    context 'when the user password is invalid and user only has one login failure attempt left' do
       let(:user) { create(:user, :login_failed_one_attempt_left) }
       let(:password) { '123' }
 
