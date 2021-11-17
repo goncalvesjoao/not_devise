@@ -6,8 +6,8 @@ class UserLoginForm
 
   NullUser = Struct.new('NullUser', :id) do
     def locked?; false; end
-    def verify_password(*); false; end
-    def verify_password!(*); false; end
+    def user_log_in!(*); false; end
+    def correct_password?(*); false; end
   end
 
   attr_accessor :username
@@ -18,10 +18,10 @@ class UserLoginForm
   validate :validate_user_locked
 
   delegate :id, to: :user, prefix: true
-  delegate :locked?, :verify_password!, :verify_password, to: :user, prefix: true, private: true
+  delegate :locked?, :user_log_in!, :correct_password?, to: :user, prefix: true, private: true
 
-  def valid_credentials?
-    valid? && user_verify_password!(password)
+  def log_in!
+    valid? && user_log_in!(password)
   end
 
   protected
@@ -31,7 +31,7 @@ class UserLoginForm
   end
 
   def validate_user_locked
-    return unless user_verify_password(password)
+    return unless user_correct_password?(password)
     return unless user_locked?
 
     errors.add(:username, :locked)

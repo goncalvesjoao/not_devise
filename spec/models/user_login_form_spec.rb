@@ -30,7 +30,7 @@ describe UserLoginForm, type: :model do
       let(:user_login_form) { described_class.new(username: user.username, password: password) }
 
       it 'is expected to return true' do
-        allow_any_instance_of(User).to receive(:verify_password) { false }
+        allow_any_instance_of(User).to receive(:correct_password?) { false }
 
         expect(user_login_form.valid?).to be true
       end
@@ -42,7 +42,7 @@ describe UserLoginForm, type: :model do
       let(:user_login_form) { described_class.new(username: user.username, password: password) }
 
       it 'is expected to return false and produce the appropriate errors' do
-        allow_any_instance_of(User).to receive(:verify_password) { true }
+        allow_any_instance_of(User).to receive(:correct_password?) { true }
 
         expect(user_login_form.valid?).to be false
         expect(user_login_form.errors.where(:username, :locked)).to_not be_empty
