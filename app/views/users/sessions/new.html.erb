@@ -2,7 +2,7 @@
   <div class="col-12 col-lg-4">
     <%= simple_form_for(@user_login_form, url: users_sessions_path, as: :user, method: :post, remote: true, wrapper: :floating_form) do |f| %>
       <div class="text-center">
-        <img class="mb-4 rounded" src="<%= asset_path('login.jpg') %>" height="250px" />
+        <img class="mb-4 rounded" src="<%= asset_path('login.jpg') %>" width="250px" />
       </div>
 
       <%= f.input :username, required: false, placeholder: 'username', wrapper_html: { class: 'mb-3' } %>

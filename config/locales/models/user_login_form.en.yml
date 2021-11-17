@@ -9,7 +9,7 @@ en:
         user_login_form:
           attributes:
             username:
-              invalid: "Incorrect, please check for typos."
+              invalid: "Please check for typos."
               locked: "Sorry your user is locked, please contact the administrator."
             password:
               invalid: "Either your handle or your password are incorrect, please try again."

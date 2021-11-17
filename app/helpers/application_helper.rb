@@ -9,12 +9,8 @@ module ApplicationHelper
   end
 
   def flash_messages
-    content_tag(:div, class: 'row justify-content-md-center') do
-      content_tag(:div, class: 'col-12 col-lg-6') do
-        flash.each do |type, message|
-          concat flash_message(message, type)
-        end
-      end
-    end
+    flash.map do |type, message|
+      flash_message(message, type)
+    end.join('').html_safe
   end
 end

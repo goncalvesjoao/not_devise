@@ -1,8 +1,4 @@
 (function () {
-  var oldNewFormContainer = document.getElementById("new-form-container");
-  var newFormContainer = document.createElement('div');
-
-  newFormContainer.innerHTML = "<%= j render(template: 'users/sessions/new', formats: [:html]) %>";
-
-  oldNewFormContainer.replaceWith(newFormContainer.firstChild);
+  Application.updateFlashMessages("<%= j flash_messages %>");
+  Application.replaceWith("#new-form-container", "<%= j render(template: 'users/sessions/new', formats: [:html]) %>");
 })()
