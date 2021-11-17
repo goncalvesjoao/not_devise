@@ -1,6 +1,8 @@
 en:
   users:
+    show:
+      log_out: Log Out
     sessions:
       new:
-        title: 'Welcome, please log in'
+        credits: "Image copyright belongs to to"
         submit: Log In

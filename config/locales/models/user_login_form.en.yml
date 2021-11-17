@@ -7,7 +7,12 @@ en:
     errors:
       models:
         user_login_form:
-          locked: "user locked for maxing out it's log_in attempts"
+          attributes:
+            username:
+              invalid: "Incorrect, please check for typos."
+              locked: "Sorry your user is locked, please contact the administrator."
+            password:
+              invalid: "Either your handle or your password are incorrect, please try again."
     attributes:
       user_login_form:
         username: Your handle

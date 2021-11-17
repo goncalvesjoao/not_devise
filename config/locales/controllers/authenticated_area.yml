@@ -1,0 +1,3 @@
+en:
+  authenticated_area:
+    not_authorized: "Access restrited to authenticated users only. Please log in, first."

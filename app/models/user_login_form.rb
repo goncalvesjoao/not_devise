@@ -6,7 +6,7 @@ class UserLoginForm
 
   NullUser = Struct.new('NullUser', :id) do
     def locked?; false; end
-    def user_log_in!(*); false; end
+    def log_in!(*); false; end
     def correct_password?(*); false; end
   end
 
@@ -15,13 +15,26 @@ class UserLoginForm
 
   validates_presence_of :username
   validates_presence_of :password
-  validate :validate_user_locked
+  validate :check_if_user_is_locked
+  validate :mark_credentials_as_invalid
 
   delegate :id, to: :user, prefix: true
-  delegate :locked?, :user_log_in!, :correct_password?, to: :user, prefix: true, private: true
+  delegate :locked?, :log_in!, :correct_password?, to: :user, prefix: true, private: true
 
   def log_in!
-    valid? && user_log_in!(password)
+    # Basic validations, to prevent #user_log_in! from being evoke unnecessarily.
+    return false if invalid?
+
+    # Same as User#log_in!, changes User#login_failure_count
+    # and locks the user according to a successful or failed log in.
+    return true if user_log_in!(password)
+
+    # User's password doesn't match User's username, therefore we shall
+    # set @mark_credentials_as_invalid to true, so that #valid? method
+    # adds :invalid key error to both :username and :password fields.
+    @mark_credentials_as_invalid = true
+
+    valid?
   end
 
   protected
@@ -30,10 +43,17 @@ class UserLoginForm
     @user ||= User.find_by(username: username) || NullUser.new
   end
 
-  def validate_user_locked
+  def check_if_user_is_locked
     return unless user_correct_password?(password)
     return unless user_locked?
 
     errors.add(:username, :locked)
+  end
+
+  def mark_credentials_as_invalid
+    return unless @mark_credentials_as_invalid
+
+    errors.add(:username, :invalid)
+    errors.add(:password, :invalid)
   end
 end

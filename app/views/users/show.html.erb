@@ -1,0 +1,15 @@
+<div class="row justify-content-md-center">
+  <div class="col-12 col-lg-4">
+    <div class="text-center">
+      <img class="mb-4 rounded" src="<%= asset_path('welcome.gif') %>" />
+    </div>
+
+    <div class="form-floating">
+      <input id="user_username" value="<%= @user.username %>" readonly class="form-control" type="text" placeholder="username" aria-label="readonly input" />
+      <label for="user_username"><%= User.human_attribute_name(:username) %></label>
+    </div>
+
+    <%= link_to t('.log_out'), users_sessions_path, class: 'mt-3 w-100 btn btn-lg btn-warning', method: :delete, data: { confirm: t('are_you_sure') } %>
+  </div>
+</div>
+

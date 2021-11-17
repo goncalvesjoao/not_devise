@@ -1,6 +1,11 @@
 en:
   users:
+    show:
+      title: "%{username}'s protected area"
+      log_out: "Log out"
+      not_authorized: "You are not authorized to access other user's pages"
     sessions:
       create:
-        alert: "Incorrect 'handle' or 'password'. Please, try again."
-        notice: "Welcome, %{username}!"
+        notice: "Successful log in!"
+      destroy:
+        notice: "Successful log out, see you later %{username}!"

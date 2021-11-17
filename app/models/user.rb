@@ -1,8 +1,20 @@
 class User < ApplicationRecord
   MAX_LOGIN_FAILURES = 3
 
+  validates_uniqueness_of :username
+
+  def password
+    @password ||= password_hash
+  end
+
+  def password=(new_password)
+    @password = new_password
+
+    self.password_hash = @password
+  end
+
   def correct_password?(password)
-    false
+    password_hash == password
   end
 
   def log_in!(password)

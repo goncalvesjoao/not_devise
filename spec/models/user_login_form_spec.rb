@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe UserLoginForm, type: :model do
-  describe '#valid_credentials?' do
+  describe '#log_in!' do
+    # TODO
   end
 
   describe '#valid?' do
