@@ -8,4 +8,4 @@ en:
       create:
         notice: "Successful log in!"
       destroy:
-        notice: "Successful log out, see you later %{username}!"
+        notice: "See you later %{username}!"

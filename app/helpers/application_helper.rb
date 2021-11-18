@@ -1,6 +1,6 @@
 module ApplicationHelper
   def flash_message(message, type = 'alert')
-    bg_class = { 'alert' => 'danger', 'notice' => 'success' }[type]
+    bg_class = { 'alert' => 'danger', 'notice' => 'success', 'warning' => 'warning' }[type]
 
     content_tag(:div, class: "alert alert-#{bg_class} d-flex", role: 'alert') do
       content_tag(:div, message, class: 'flex-fill') +

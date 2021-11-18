@@ -26,11 +26,11 @@ module Users
 
     def destroy
       # current_user needs to load before session loses the :user_id key
-      notice_message = t('.notice', username: current_user.username)
+      flash[:warning] = t('.notice', username: current_user.username)
 
       session.delete(:user_id)
 
-      redirect_to root_path, notice: notice_message
+      redirect_to root_path
     end
 
     protected
