@@ -1,8 +1,8 @@
 en:
   users:
     show:
-      log_out: Log Out
+      log_out: "Log Out"
     sessions:
       new:
         credits: "Image copyright belongs to to"
-        submit: Log In
+        log_in: "Log In"

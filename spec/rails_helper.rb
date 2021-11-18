@@ -5,6 +5,7 @@ require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'rack_session_access/capybara'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -33,8 +34,17 @@ end
 
 FactoryBot.find_definitions
 
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
 RSpec.configure do |config|
+  config.include SystemHelpers, type: :system
   config.include FactoryBot::Syntax::Methods
+
+  config.before(:example, type: :system) { driven_by(:rack_test) }
+
+  config.around(realistic_error_responses: true) do |example|
+    respond_without_detailed_exceptions(&example)
+  end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

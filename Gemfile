@@ -53,6 +53,7 @@ group :test do
   gem 'webdrivers'
   gem 'rspec-rails', '~> 5.0.0'
   gem 'factory_bot', '>= 6.1'
+  gem 'rack_session_access', '>= 0.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -2,7 +2,21 @@ require 'rails_helper'
 
 describe UserLoginForm, type: :model do
   describe '#log_in!' do
-    # TODO
+    context "when username and password are valid but don't match," do
+      let(:user) { create(:user, :locked) }
+      let(:password) { '666' }
+      let(:user_login_form) { described_class.new(username: user.username, password: password) }
+
+      it 'is expected to return false and produce the appropriate errors' do
+        allow_any_instance_of(User).to receive(:correct_password?) { false }
+
+        expect_any_instance_of(User).to receive(:log_in!).with(password)
+
+        expect(user_login_form.log_in!).to be false
+        expect(user_login_form.errors.where(:username, :invalid)).to_not be_empty
+        expect(user_login_form.errors.where(:password, :invalid)).to_not be_empty
+      end
+    end
   end
 
   describe '#valid?' do
@@ -17,7 +31,7 @@ describe UserLoginForm, type: :model do
       end
     end
 
-    context "when password and username are present  username doesn't match with an existing User," do
+    context "when password and username are present username doesn't match with an existing User," do
       let(:username) { 'john_snow' }
       let(:password) { '666' }
       subject { described_class.new(username: username, password: password).valid? }
