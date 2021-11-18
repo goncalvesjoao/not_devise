@@ -1,6 +1,70 @@
 require 'rails_helper'
 
 describe User, type: :model do
+  describe '.create' do
+    context 'given a blank password, ' do
+      let(:user) { described_class.create(username: 'john_snow', password: '') }
+
+      it 'is expected to not save the user to the DB and produce the appropriate errors' do
+        expect(user.id).to be_nil
+        expect(user.errors.where(:password, :blank)).to_not be_empty
+      end
+    end
+
+    context 'given a password smaller than User::MIN_PASSWORD_LENGTH, ' do
+      let(:user) { described_class.create(username: 'john_snow', password: '666') }
+
+      it 'is expected to not save the user to the DB and produce the appropriate errors' do
+        expect(user.id).to be_nil
+        expect(user.errors.where(:password, :too_short)).to_not be_empty
+      end
+    end
+  end
+
+  describe '#valid?' do
+    context 'when user is a new record,' do
+      context 'and has a blank username' do
+        let(:user) { build(:user, username: '') }
+
+        it 'is expected to return false and produce the appropriate errors' do
+          expect(user.valid?).to be false
+          expect(user.errors.where(:username, :blank)).to_not be_empty
+        end
+      end
+
+      context 'and his username is not unique' do
+        let(:user1) { create(:user) }
+        let(:user2) { build(:user, username: user1.username) }
+
+        it 'is expected to return false and produce the appropriate errors' do
+          expect(user2.valid?).to be false
+          expect(user2.errors.where(:username, :taken)).to_not be_empty
+        end
+      end
+    end
+
+    context 'when user is an existing record,' do
+      context 'and his username is set to blank' do
+        let(:user) { create(:user).tap { |user| user.username = '' } }
+
+        it 'is expected to return false and produce the appropriate errors' do
+          expect(user.valid?).to be false
+          expect(user.errors.where(:username, :blank)).to_not be_empty
+        end
+      end
+
+      context "and his username is set to another user's username" do
+        let(:user1) { create(:user) }
+        let(:user2) { create(:user).tap { |user| user.username = user1.username } }
+
+        it 'is expected to return false and produce the appropriate errors' do
+          expect(user2.valid?).to be false
+          expect(user2.errors.where(:username, :taken)).to_not be_empty
+        end
+      end
+    end
+  end
+
   describe '#locked?' do
     context 'when the user.locked_at is populated with nil,' do
       subject { build(:user).locked? }

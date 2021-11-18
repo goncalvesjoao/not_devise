@@ -1,24 +1,52 @@
 # README
+Rails App with authenticaction (log in only) from scratch.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+&nbsp;
 
-Things you may want to cover:
+# Dependencies required to be installed in the system
+- ruby (ideally v2.7.4)
+- node (ideally v16)
+- bundler (ideally v2.1)
+- postgres (v9 up)
 
-* Ruby version
+&nbsp;
 
-* System dependencies
+# Setup
+Be sure you have your local postgres DB is installed and execute:
+```shell
+<rails app folder>$ bundle
+```
 
-* Configuration
+Be sure you have your local postgres DB is running and execute:
+```shell
+<rails app folder>$ rake db:drop && rake db:create && rake db:migrate && rake db:seed
+```
 
-* Database creation
+&nbsp;
 
-* Database initialization
+# Boot up
+Run rails app:
+```shell
+<rails app folder>$ rails s
+```
 
-* How to run the test suite
+And when by visiting ```http://localhost:3000``` you can log in, using the following list of users:
+```json
+[
+  { username: "john_snow", password: "password_snow" },
+  { username: "john_doe", password: "password_doe" },
+]
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+&nbsp;
 
-* Deployment instructions
+# Tests
+Make sure test DB is updated, by executing:
+```shell
+<rails app folder>$ RAILS_ENV=test rake db:migrate
+```
 
-* ...
+Then run the test suit:
+```shell
+<rails app folder>$ rspec
+```
