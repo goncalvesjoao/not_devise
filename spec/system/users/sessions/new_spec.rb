@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe "User's log in page" do
@@ -9,7 +11,7 @@ describe "User's log in page" do
 
       visit '/users/sessions/new'
 
-      expect(page.current_path).to eq(user_path('me'))
+      expect(page).to have_current_path(user_path('me'), ignore_query: true)
     end
   end
 
@@ -35,7 +37,7 @@ describe "User's log in page" do
     let(:user) { create(:user) }
 
     it 'is expected to log in the user and redirect the user to his personal page' do
-      allow_any_instance_of(User).to receive(:correct_password?) { true }
+      allow_any_instance_of(User).to receive(:correct_password?).and_return(true)
 
       visit '/users/sessions/new'
 
@@ -43,7 +45,7 @@ describe "User's log in page" do
       fill_in User.human_attribute_name(:password), with: fake_password
       click_button I18n.t('users.sessions.new.log_in')
 
-      expect(page.current_path).to eq(user_path('me'))
+      expect(page).to have_current_path(user_path('me'), ignore_query: true)
       expect(page).to have_content I18n.t('users.sessions.create.notice')
     end
   end
@@ -53,7 +55,7 @@ describe "User's log in page" do
     let(:user) { create(:user) }
 
     before do
-      allow_any_instance_of(User).to receive(:correct_password?) { false }
+      allow_any_instance_of(User).to receive(:correct_password?).and_return(false)
 
       visit '/users/sessions/new'
 
@@ -66,7 +68,7 @@ describe "User's log in page" do
 
     context 'and after that he finally inputs the right credentials' do
       it 'is expected for the user not be able to log in because he is locked' do
-        allow_any_instance_of(User).to receive(:correct_password?) { true }
+        allow_any_instance_of(User).to receive(:correct_password?).and_return(true)
 
         fill_in User.human_attribute_name(:username), with: user.username
         fill_in User.human_attribute_name(:password), with: fake_password

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # More details at: https://robots.thoughtbot.com/activemodel-form-objects
 
 class UserLoginForm
@@ -5,16 +7,23 @@ class UserLoginForm
   extend ActiveModel::Translation
 
   NullUser = Struct.new('NullUser', :id) do
-    def locked?; false; end
-    def log_in!(*); false; end
-    def correct_password?(*); false; end
+    def locked?
+      false
+    end
+
+    def log_in!(*)
+      false
+    end
+
+    def correct_password?(*)
+      false
+    end
   end
 
-  attr_accessor :username
-  attr_accessor :password
+  attr_accessor :username, :password
 
-  validates_presence_of :username
-  validates_presence_of :password
+  validates :username, presence: true
+  validates :password, presence: true
   validate :check_if_user_is_locked
   validate :mark_credentials_as_invalid
 

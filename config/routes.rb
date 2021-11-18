@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   namespace :users do
-    resources :sessions, only: %i(index new create) do
+    resources :sessions, only: %i[index new create] do
       delete '/', to: 'sessions#destroy', on: :collection
     end
   end
 
-  resources :users, only: %i(show)
+  resources :users, only: %i[show]
 
-  root to: "home#index"
+  root to: 'home#index'
 end

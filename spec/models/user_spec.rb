@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe User, type: :model do
@@ -7,7 +9,7 @@ describe User, type: :model do
 
       it 'is expected to not save the user to the DB and produce the appropriate errors' do
         expect(user.id).to be_nil
-        expect(user.errors.where(:password, :blank)).to_not be_empty
+        expect(user.errors.where(:password, :blank)).not_to be_empty
       end
     end
 
@@ -16,7 +18,7 @@ describe User, type: :model do
 
       it 'is expected to not save the user to the DB and produce the appropriate errors' do
         expect(user.id).to be_nil
-        expect(user.errors.where(:password, :too_short)).to_not be_empty
+        expect(user.errors.where(:password, :too_short)).not_to be_empty
       end
     end
   end
@@ -28,7 +30,7 @@ describe User, type: :model do
 
         it 'is expected to return false and produce the appropriate errors' do
           expect(user.valid?).to be false
-          expect(user.errors.where(:username, :blank)).to_not be_empty
+          expect(user.errors.where(:username, :blank)).not_to be_empty
         end
       end
 
@@ -38,7 +40,7 @@ describe User, type: :model do
 
         it 'is expected to return false and produce the appropriate errors' do
           expect(user2.valid?).to be false
-          expect(user2.errors.where(:username, :taken)).to_not be_empty
+          expect(user2.errors.where(:username, :taken)).not_to be_empty
         end
       end
     end
@@ -49,7 +51,7 @@ describe User, type: :model do
 
         it 'is expected to return false and produce the appropriate errors' do
           expect(user.valid?).to be false
-          expect(user.errors.where(:username, :blank)).to_not be_empty
+          expect(user.errors.where(:username, :blank)).not_to be_empty
         end
       end
 
@@ -59,7 +61,7 @@ describe User, type: :model do
 
         it 'is expected to return false and produce the appropriate errors' do
           expect(user2.valid?).to be false
-          expect(user2.errors.where(:username, :taken)).to_not be_empty
+          expect(user2.errors.where(:username, :taken)).not_to be_empty
         end
       end
     end
@@ -73,7 +75,7 @@ describe User, type: :model do
     end
 
     context 'when the user.locked_at is populated with a date,' do
-      subject { build(:user, locked_at: Time.now).locked? }
+      subject { build(:user, locked_at: Time.zone.now).locked? }
 
       it { is_expected.to be true }
     end
@@ -85,7 +87,7 @@ describe User, type: :model do
       let(:password) { '666' }
 
       it 'is expected to return true and reset the login_failure_count' do
-        allow(user).to receive(:correct_password?) { true }
+        allow(user).to receive(:correct_password?).and_return(true)
 
         expect(user.log_in!(password)).to be true
         expect(user.login_failure_count).to be 0
@@ -98,11 +100,11 @@ describe User, type: :model do
       let(:password) { '666' }
 
       it 'is expected to return false and not change login_failure_count' do
-        allow(user).to receive(:correct_password?) { false }
+        allow(user).to receive(:correct_password?).and_return(false)
 
         expect(user.log_in!(password)).to be false
         expect(user.login_failure_count).to be User::MAX_LOGIN_FAILURES
-        expect(user.locked_at).to_not be nil
+        expect(user.locked_at).not_to be nil
       end
     end
 
@@ -111,7 +113,7 @@ describe User, type: :model do
       let(:password) { '666' }
 
       it 'is expected to return false and increment the login_failure_count' do
-        allow(user).to receive(:correct_password?) { false }
+        allow(user).to receive(:correct_password?).and_return(false)
 
         expect(user.log_in!(password)).to be false
         expect(user.login_failure_count).to be 1
@@ -124,11 +126,11 @@ describe User, type: :model do
       let(:password) { '666' }
 
       it 'is expected to return false, increment the login_failure_count and populate locked_at' do
-        allow(user).to receive(:correct_password?) { false }
+        allow(user).to receive(:correct_password?).and_return(false)
 
         expect(user.log_in!(password)).to be false
         expect(user.login_failure_count).to be User::MAX_LOGIN_FAILURES
-        expect(user.locked_at).to_not be nil
+        expect(user.locked_at).not_to be nil
       end
     end
 
@@ -137,11 +139,11 @@ describe User, type: :model do
       let(:password) { '666' }
 
       it 'is expected to return false and not increment login_failure_count' do
-        allow(user).to receive(:correct_password?) { false }
+        allow(user).to receive(:correct_password?).and_return(false)
 
         expect(user.log_in!(password)).to be false
         expect(user.login_failure_count).to be User::MAX_LOGIN_FAILURES
-        expect(user.locked_at).to_not be nil
+        expect(user.locked_at).not_to be nil
       end
     end
   end

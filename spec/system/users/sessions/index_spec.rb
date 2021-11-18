@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe "Sessions Index page" do
+describe 'Sessions Index page' do
   it 'is expected to return 404' do
     visit '/users/sessions'
 

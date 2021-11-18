@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Home page' do
@@ -5,7 +7,7 @@ describe 'Home page' do
     it 'is expected to redirect the user to the log in page' do
       visit '/'
 
-      expect(page.current_path).to eq(new_users_session_path)
+      expect(page).to have_current_path(new_users_session_path, ignore_query: true)
     end
   end
 
@@ -17,7 +19,7 @@ describe 'Home page' do
 
       visit '/'
 
-      expect(page.current_path).to eq(user_path('me'))
+      expect(page).to have_current_path(user_path('me'), ignore_query: true)
     end
   end
 end

@@ -1,10 +1,10 @@
+# frozen_string_literal: true
+
 class UsersController < AuthenticatedAreaController
-  before_action :find_user, only: %i(show)
+  before_action :find_user, only: %i[show]
 
   def show
-    if @user != current_user
-      redirect_to user_path('me'), alert: t('.not_authorized')
-    end
+    redirect_to user_path('me'), alert: t('.not_authorized') if @user != current_user
   end
 
   protected

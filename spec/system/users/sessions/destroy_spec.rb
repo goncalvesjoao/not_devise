@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe "User's logging out" do
@@ -11,12 +13,12 @@ describe "User's logging out" do
 
       click_link I18n.t('users.show.log_out')
 
-      expect(page.current_path).to eq(new_users_session_path)
+      expect(page).to have_current_path(new_users_session_path, ignore_query: true)
       expect(page).to have_content I18n.t('users.sessions.destroy.notice', username: user.username)
 
       visit '/users/me'
 
-      expect(page.current_path).to eq(new_users_session_path)
+      expect(page).to have_current_path(new_users_session_path, ignore_query: true)
       expect(page).to have_content I18n.t('authenticated_area.not_authorized')
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :user do
     sequence(:username, 1) { |n| "fakeuser_#{'0' if n < 10}#{n}" }
@@ -10,7 +12,7 @@ FactoryBot.define do
 
     trait :locked do
       login_failure_count { User::MAX_LOGIN_FAILURES }
-      locked_at { Time.now }
+      locked_at { Time.zone.now }
     end
   end
 end

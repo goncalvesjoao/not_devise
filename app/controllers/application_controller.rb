@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   def current_user
     # Preventing making extra DB calls in case @current_user is set to nil
@@ -10,6 +12,6 @@ class ApplicationController < ActionController::Base
   protected
 
   def raise_not_found
-    raise ActionController::RoutingError.new('Not Found')
+    raise ActionController::RoutingError, 'Not Found'
   end
 end

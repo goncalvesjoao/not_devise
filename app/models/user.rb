@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   MIN_PASSWORD_LENGTH = 8
   MAX_LOGIN_FAILURES = 3
   PASSWORD_COST = 12 # Let's make the hashing function take a while to process to make the hacker's life dificult
 
-  validates_presence_of :username
-  validates_uniqueness_of :username
+  validates :username, presence: true
+  validates :username, uniqueness: true
   validate :validate_password, on: :create
 
   def password
@@ -42,19 +44,15 @@ class User < ApplicationRecord
 
   def increment_login_failure_count!
     self.login_failure_count += 1
-    self.locked_at = Time.now if should_user_be_locked?
+    self.locked_at = Time.zone.now if should_user_be_locked?
 
     save
   end
 
   def validate_password
-    if !@password_length || @password_length.zero?
-      return errors.add(:password, :blank)
-    end
+    return errors.add(:password, :blank) if !@password_length || @password_length.zero?
 
-    if @password_length < MIN_PASSWORD_LENGTH
-      errors.add(:password, :too_short, count: @password_length)
-    end
+    errors.add(:password, :too_short, count: @password_length) if @password_length < MIN_PASSWORD_LENGTH
   end
 
   private
