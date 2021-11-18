@@ -1,20 +1,21 @@
 class User < ApplicationRecord
   MAX_LOGIN_FAILURES = 3
+  PASSWORD_COST = 12 # Let's make the hashing function take a while to process to make the hacker's life dificult
 
   validates_uniqueness_of :username
 
   def password
-    @password ||= password_hash
+    @password ||= BCrypt::Password.new(password_hash)
   end
 
   def password=(new_password)
-    @password = new_password
+    @password = BCrypt::Password.create(new_password, cost: PASSWORD_COST)
 
     self.password_hash = @password
   end
 
-  def correct_password?(password)
-    password_hash == password
+  def correct_password?(guest_password)
+    password == guest_password
   end
 
   def log_in!(password)
